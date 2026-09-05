@@ -157,6 +157,13 @@ All sensors share synchronous 10µs trigger pulses with independent interrupt-dr
 
 ## Project Documentation
 
+### Hardware Build Photo
+<p align="center">
+  <img src="EVade.jpeg" alt="EVade Autonomous Robot Build" width="600" style="border-radius: 12px;" />
+  <br>
+  <em>EVade Hardware Prototype: Tracked chassis with 360° ultrasonic echolocation, MPU6050 IMU, dual relays, and D4 alarm</em>
+</p>
+
 ### Architecture & System Workflow
 
 ```mermaid
