@@ -95,7 +95,7 @@ class BotVisualizerApp:
         top_bar = tk.Frame(self.root, bg=BG_CARD, padx=14, pady=10, highlightthickness=1, highlightbackground=BORDER_COLOR)
         top_bar.pack(fill=tk.X, side=tk.TOP)
 
-        title_lbl = tk.Label(top_bar, text="🤖 TINKERHUB CYBERBOT", fg=CYAN, bg=BG_CARD, font=("Segoe UI", 13, "bold"))
+        title_lbl = tk.Label(top_bar, text="EVade CYBERBOT", fg=CYAN, bg=BG_CARD, font=("Segoe UI", 13, "bold"))
         title_lbl.pack(side=tk.LEFT, padx=(0, 16))
 
         tk.Label(top_bar, text="Port:", fg=TEXT_MUTED, bg=BG_CARD, font=("Segoe UI", 10)).pack(side=tk.LEFT, padx=(6, 2))
@@ -333,13 +333,13 @@ class BotVisualizerApp:
             self.status = "OBJECT_IN_FRONT"
             self.left_pwm = 0
             self.right_pwm = 190
-            self.action_text = "⚡ ACTION: PIVOTING AWAY FROM FRONT OBSTACLE"
+            self.action_text = "ACTION: PIVOTING AWAY FROM FRONT OBSTACLE"
             self.action_color = AMBER
         else:
             self.status = "CLEAR"
             self.left_pwm = 0
             self.right_pwm = 0
-            self.action_text = "✅ ACTION: HOLDING POSITION (ALL PATHWAYS CLEAR)"
+            self.action_text = "ACTION: HOLDING POSITION (ALL PATHWAYS CLEAR)"
             self.action_color = GREEN
 
         self.mode = "AUTO_EVADE"
@@ -384,12 +384,12 @@ class BotVisualizerApp:
         l, r = self.left_pwm, self.right_pwm
 
         if self.mode == "EMERG_STOP":
-            self.action_text = "🛑 ACTION: EMERGENCY STOPPED (ALL MOTORS CUT OFF)"
+            self.action_text = "[E-STOP] ACTION: EMERGENCY STOPPED (ALL MOTORS CUT OFF)"
             self.action_color = RED
             return
 
         if self.status == "ALL_SIDES_TRAPPED":
-            self.action_text = "⚠️ ACTION: TRAPPED (BOXED IN - MOTORS HALTED FOR SAFETY)"
+            self.action_text = "[TRAPPED] ACTION: BOXED IN - MOTORS HALTED FOR SAFETY"
             self.action_color = RED
             return
 
@@ -416,10 +416,10 @@ class BotVisualizerApp:
             self.action_color = AMBER
         else:
             if self.status == "CLEAR":
-                self.action_text = "✅ ACTION: HOLDING POSITION (ALL PATHWAYS CLEAR)"
+                self.action_text = "ACTION: HOLDING POSITION (ALL PATHWAYS CLEAR)"
                 self.action_color = GREEN
             else:
-                self.action_text = f"⏳ ACTION: DECIDING EVASION PATH ({self.status})"
+                self.action_text = f"ACTION: DECIDING EVASION PATH ({self.status})"
                 self.action_color = AMBER
 
     def _update_badges(self):

@@ -588,30 +588,30 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     <!-- EMERGENCY STOP -->
     <div class="estop-box">
       <button class="btn-estop" id="estopBtn" onclick="triggerEstop()" style="display: none;">
-        <span>🛑</span> EMERGENCY STOP
+        <span>STOP</span> EMERGENCY STOP
       </button>
       <button class="btn-resume" id="resumeBtn" onclick="resumeEstop()" style="display: flex;">
-        <span>⚡</span> RESET & RESUME MOTORS
+        <span>RESET</span> RESET & RESUME MOTORS
       </button>
     </div>
-    <div style="text-align: center; font-size: 11px; color: var(--text-secondary); margin-top: 6px;">⌨️ Tap <b>[SPACE]</b> for quick E-Stop / Resume</div>
+    <div style="text-align: center; font-size: 11px; color: var(--text-secondary); margin-top: 6px;">Tap <b>[SPACE]</b> for quick E-Stop / Resume</div>
 
     <!-- HARDWARE TASER CONTROL -->
     <div class="alarm-box">
       <button class="btn-alarm" id="alarmToggleBtn" onclick="toggleAlarm()">
-        <span id="alarmIcon">⚡</span> <span id="alarmBtnText">FIRE TASER (D4 TEST)</span>
+        <span id="alarmIcon"></span> <span id="alarmBtnText">FIRE TASER (D4 TEST)</span>
       </button>
     </div>
 
-    <div class="stall-alert-banner" id="stallAlert">⚠️ STALL DETECTED: THROTTLE ACTIVE WITH NO ACCELERATION (1S E-STOP)</div>
-    <div class="alarm-alert-banner" id="alarmAlert" onclick="toggleAlarm()" style="cursor: pointer;" title="Click to disarm Taser">⚡ NO MOVES AVAILABLE — BOT TRAPPED (HIGH-VOLTAGE TASER ACTIVE ON PIN D4) • <u>TAP TO DISARM</u></div>
+    <div class="stall-alert-banner" id="stallAlert">[STALL DETECTED] THROTTLE ACTIVE WITH NO ACCELERATION (1S E-STOP)</div>
+    <div class="alarm-alert-banner" id="alarmAlert" onclick="toggleAlarm()" style="cursor: pointer;" title="Click to disarm Taser">[ALERT] NO MOVES AVAILABLE — BOT TRAPPED (HIGH-VOLTAGE TASER ACTIVE ON PIN D4) • <u>TAP TO DISARM</u></div>
 
     <!-- ULTRASONIC SENSOR RADAR CARD -->
     <div class="card" id="radarCard">
       <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
         <span>Ultrasonic Radar (6 Directions)</span>
         <div style="display: flex; gap: 8px; align-items: center;">
-          <button class="btn-diag-toggle" id="btnDiagToggle" onclick="toggleDiagonalSensors()">⚡ REAR DIAG: OFF</button>
+          <button class="btn-diag-toggle" id="btnDiagToggle" onclick="toggleDiagonalSensors()">REAR DIAG: OFF</button>
           <span id="obstacleAlert" style="color: var(--emerald-neon); font-size: 11px; font-weight: 700; letter-spacing: 0.5px;">PATH CLEAR</span>
         </div>
       </div>
@@ -643,7 +643,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="robot-center-icon" id="botCenterIcon" style="justify-self: center;">
           <div class="robot-pulse"></div>
           <div class="bot-pointer">▲</div>
-          <span>🤖</span>
+          <span style="font-size: 10px; font-weight: 800; letter-spacing: 0.5px;">BOT</span>
         </div>
         <div class="sensor-node" id="nodeRight">
           <span class="sensor-dir">RIGHT 90° ▶</span>
@@ -709,9 +709,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
       <!-- POSE & CALIBRATION BUTTONS -->
       <div class="imu-btn-row">
-        <button class="btn-action" onclick="resetHeadingOnly()">🎯 Zero Heading</button>
-        <button class="btn-action" onclick="resetOriginOnly()">📍 Reset (0,0)</button>
-        <button class="btn-action" onclick="promptCustomPose()">📐 Set Pose</button>
+        <button class="btn-action" onclick="resetHeadingOnly()">Zero Heading</button>
+        <button class="btn-action" onclick="resetOriginOnly()">Reset (0,0)</button>
+        <button class="btn-action" onclick="promptCustomPose()">Set Pose</button>
       </div>
     </div>
 
@@ -823,10 +823,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         if (alarmBtn) {
           alarmBtn.classList.toggle('active', isAlarm);
           if (isAlarm) {
-            if (alarmIcon) alarmIcon.innerText = '⚡';
+            if (alarmIcon) alarmIcon.innerText = '';
             if (alarmBtnText) alarmBtnText.innerText = isManual ? 'DISARM MANUAL TASER (D4 DISCHARGING)' : 'DISARM DEFENSE TASER (TRAPPED)';
           } else {
-            if (alarmIcon) alarmIcon.innerText = '⚡';
+            if (alarmIcon) alarmIcon.innerText = '';
             if (alarmBtnText) alarmBtnText.innerText = 'FIRE TASER (D4 TEST)';
           }
         }
@@ -851,7 +851,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         }
         const btnDiag = document.getElementById('btnDiagToggle');
         if (btnDiag) {
-          btnDiag.innerText = diagonalEnabled ? '⚡ REAR DIAG: ON' : '⚡ REAR DIAG: OFF';
+          btnDiag.innerText = diagonalEnabled ? 'REAR DIAG: ON' : 'REAR DIAG: OFF';
           btnDiag.classList.toggle('active', diagonalEnabled);
         }
 

@@ -1,6 +1,6 @@
 <img width="1280" height="720" alt="EVade" src="EVade.jpeg" />
 
-# EVade 🎯
+# EVade
 
 > **"The Anti-Social Autonomous Evasion Droid that aggressively refuses to be perceived, touched, or socially engaged with."**
 
@@ -222,7 +222,7 @@ flowchart TD
 
 ---
 
-Made with ❤️ at TinkerHub Useless Projects 
+Made with dedication at TinkerHub Useless Projects 
 
 ![Static Badge](https://img.shields.io/badge/TinkerHub-24?color=%23000000&link=https%3A%2F%2Fwww.tinkerhub.org%2F)
 ![Static Badge](https://img.shields.io/badge/UselessProjects--26-26?link=https%3A%2F%2Ftinkerhub.org%2Fevents%2F1M8ORET9A1%2Fuseless-projects-3.0)

@@ -85,7 +85,7 @@ void printSerialMonitorTelemetry(RobotControlMode mode, ObstacleStatus status) {
     if (motors.isEmergencyStopped()) modeStr = "EMERG_STOP ";
     else if (mode == MODE_WEB_OVERRIDE) modeStr = "WEB_OVERRIDE";
 
-    const char* alarmStr = evasion.isAlarmActive() ? " [🚨ALARM ON]" : "";
+    const char* alarmStr = evasion.isAlarmActive() ? " [TASER ON]" : "";
 
     int16_t lSpd, rSpd;
     motors.getSpeeds(lSpd, rSpd);
