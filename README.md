@@ -1,8 +1,8 @@
 <img width="1280" height="640" alt="git (1)" src="https://github.com/user-attachments/assets/8920b256-2ba8-4988-b824-5351134eb4bd" />
 
-# EvadeBot: The Anti-Social Evasion Droid 🎯
+# EVade 🎯
 
-> **"A robot that aggressively refuses to be perceived, touched, or socially engaged with."**
+> **"The Anti-Social Autonomous Evasion Droid that aggressively refuses to be perceived, touched, or socially engaged with."**
 
 ---
 
@@ -17,7 +17,7 @@
 ---
 
 ### Project Description
-EvadeBot is a hyper-vigilant, ultra-anti-social autonomous tracked robot engineered with one singular purpose: **to avoid any and all human contact at all costs**. Armed with a 360-degree hex-directional ultrasonic echolocation array, a 6-DOF MPU6050 inertial measurement unit, dual-channel relay pulse-tap speed modulation, and a loud hardware panic siren (GPIO 4 / D4), EvadeBot treats every approaching human as an existential threat to its introversion.
+EVade is a hyper-vigilant, ultra-anti-social autonomous tracked robot engineered with one singular purpose: **to avoid any and all human contact at all costs**. Armed with a 360-degree hex-directional ultrasonic echolocation array, a 6-DOF MPU6050 inertial measurement unit, dual-channel relay pulse-tap speed modulation, and a loud hardware panic siren (GPIO 4 / D4), EVade treats every approaching human as an existential threat to its introversion.
 
 ---
 
@@ -29,11 +29,11 @@ Nobody stopped to ask: **What if a robot just wants to be left alone?** Why shou
 ---
 
 ### The Solution (that nobody asked for)
-Enter **EvadeBot**: the world's most defensive introverted tank. 
+Enter **EVade**: the world's most defensive introverted tank. 
 
-1. **Strict Personal Boundary Zone (25cm – 100cm)**: Using a 6-sensor ultrasonic radar network firing synchronous 10µs pulses across three hardware trigger lines (GPIO 27, 14, 23), EvadeBot continuously monitors all 360° of its perimeter.
-2. **Instant Flight Response**: If any human, hand, or pet breaches its personal boundary, EvadeBot calculates dynamic repulsion vectors and rapidly fires discrete relay taps to rotate away or sprint in reverse.
-3. **Hardware Panic Siren (GPIO 4 / D4)**: If you corner EvadeBot against a wall or box it in with no escape routes available, it enters full sensory overload: cutting its motors and blaring a piercing hardware alarm siren on pin D4 until you walk away and give it space.
+1. **Strict Personal Boundary Zone (25cm – 100cm)**: Using a 6-sensor ultrasonic radar network firing synchronous 10µs pulses across three hardware trigger lines (GPIO 27, 14, 23), EVade continuously monitors all 360° of its perimeter.
+2. **Instant Flight Response**: If any human, hand, or pet breaches its personal boundary, EVade calculates dynamic repulsion vectors and rapidly fires discrete relay taps to rotate away or sprint in reverse.
+3. **Hardware Panic Siren (GPIO 4 / D4)**: If you corner EVade against a wall or box it in with no escape routes available, it enters full sensory overload: cutting its motors and blaring a piercing hardware alarm siren on pin D4 until you walk away and give it space.
 4. **Wireless Web Controller with Tap-to-Mute**: An embedded cybernetic Web Portal hosted directly from the ESP32's Access Point (`http://192.168.4.1`) featuring a real-time radar visualizer, 2D dead-reckoning arena canvas, instant spacebar emergency stop, and a web alarm test / mute button.
 
 ---
@@ -198,7 +198,7 @@ flowchart TD
 
 1. **Discrete Relay-Tapping Engine**:
    - Ordinary continuous relay closure causes aggressive, uncontrollable tank wheelies.
-   - EvadeBot introduces a discrete two-phase cycle: **Pulse Phase** (relays energized for 60–110ms) followed by a **Measure Phase** (relays cut, chassis still, ultrasonic sensor measures cleanly without motor vibration interference).
+   - EVade introduces a discrete two-phase cycle: **Pulse Phase** (relays energized for 60–110ms) followed by a **Measure Phase** (relays cut, chassis still, ultrasonic sensor measures cleanly without motor vibration interference).
 2. **Accelerometer Stall Watchdog**:
    - If throttle is commanded ON but the MPU6050 accelerometer registers no dynamic acceleration for $> 600\text{ms}$ ($\Delta a < 0.06g$), the bot detects it is caught against an immovable obstacle and triggers an automatic 1-second E-Stop cut to protect the motor relays.
 3. **Spacebar Quick Emergency Stop**:

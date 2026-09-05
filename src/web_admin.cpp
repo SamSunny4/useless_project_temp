@@ -14,7 +14,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>TinkerHub Bot | Remote Controller</title>
+  <title>EVade | Remote Controller</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
@@ -576,9 +576,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
   <div class="container">
     <header>
       <div class="brand">
-        <div class="brand-icon">TB</div>
+        <div class="brand-icon">EV</div>
         <div class="brand-text">
-          <h1>TINKERHUB BOT</h1>
+          <h1>EVADE</h1>
           <p>REMOTE CONTROLLER</p>
         </div>
       </div>
