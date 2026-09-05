@@ -1,1 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EvadeBot | The Anti-Social Evasion Droid 🎯</title>
+  <meta name="description" content="EvadeBot is an aggressively anti-social autonomous tracked robot built for TinkerHub Useless Projects 3.0. Armed with 360° ultrasonic echolocation, MPU6050 IMU, dual-relay pulse tapping, and a hardware panic alarm.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #060911;
+      --bg-surface: rgba(13, 19, 33, 0.75);
+      --bg-card: rgba(17, 24, 39, 0.65);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(0, 240, 255, 0.35);
+      
+      --cyan-neon: #00F0FF;
+      --cyan-glow: rgba(0, 240, 255, 0.35);
+      --red-neon: #EF4444;
+      --red-glow: rgba(239, 68, 68, 0.45);
+      --amber-neon: #F59E0B;
+      --amber-glow: rgba(245, 158, 11, 0.35);
+      --purple-neon: #8B5CF6;
+      --purple-glow: rgba(139, 92, 246, 0.35);
+      --emerald-neon: #10B981;
+      
+      --text-primary: #F8FAFC;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+    }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 85% 60%, rgba(239, 68, 68, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+    }
+
+    /* TYPOGRAPHY & UTILITIES */
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .gradient-text {
+      background: linear-gradient(135deg, #00F0FF 0%, #3B82F6 50%, #8B5CF6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .gradient-red {
+      background: linear-gradient(135deg, #F87171 0%, #EF4444 60%, #DC2626 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* GLASS CONTAINER */
+    .glass-panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-panel:hover {
+      border-color: var(--border-focus);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* NAVBAR */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(6, 9, 17, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .brand-badge {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--cyan-neon), #3B82F6);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: #000;
+      font-size: 16px;
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+    .brand-title { font-weight: 800; font-size: 18px; letter-spacing: 0.5px; }
+    .brand-tag { font-size: 11px; color: var(--cyan-neon); letter-spacing: 1px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan-neon); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-audio-toggle {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-audio-toggle.active {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--cyan-neon);
+      color: var(--cyan-neon);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+    .btn-cta {
+      background: linear-gradient(135deg, #00F0FF, #3B82F6);
+      color: #000;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 8px 18px;
+      border-radius: 10px;
+      box-shadow: 0 0 18px var(--cyan-glow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 24px var(--cyan-glow);
+    }
+
+    /* MAIN WRAPPER */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 24px 60px;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      text-align: center;
+      padding: 60px 12px 40px;
+      position: relative;
+    }
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #FCA5A5;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 24px;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+    }
+    .pill-badge .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--red-neon);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--red-neon);
+      animation: pulse 1s infinite alternate;
+    }
+
+    .hero-title {
+      font-size: clamp(38px, 6vw, 68px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+    .hero-subtitle {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-secondary);
+      max-width: 780px;
+      margin: 0 auto 36px;
+      font-weight: 400;
+    }
+    .hero-btns {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan-neon), #3B82F6);
+      color: #000;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 25px var(--cyan-glow);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px var(--cyan-glow);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--cyan-neon);
+      color: var(--cyan-neon);
+    }
+
+    /* INTERACTIVE SIMULATOR CARD */
+    .sim-section {
+      margin: 50px 0 80px;
+    }
+    .sim-container {
+      padding: 24px;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .sim-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .sim-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sim-title h2 { font-size: 20px; font-weight: 800; }
+    .sim-tag {
+      font-size: 11px;
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid var(--cyan-neon);
+      color: var(--cyan-neon);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 700;
+    }
+    .sim-status-hud {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+    }
+    .hud-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+    .hud-chip span { color: var(--cyan-neon); font-weight: 700; }
+    .hud-chip.alarm-active {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: var(--red-neon);
+      color: #FCA5A5;
+      animation: pulse 0.5s infinite alternate;
+    }
+    .hud-chip.alarm-active span { color: var(--red-neon); }
+
+    /* SIMULATOR CANVAS */
+    .canvas-wrapper {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #04070E;
+      border: 1px solid rgba(0, 240, 255, 0.15);
+      cursor: crosshair;
+    }
+    #simCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .canvas-overlay-banner {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(239, 68, 68, 0.9);
+      color: #FFF;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      padding: 8px 20px;
+      border-radius: 30px;
+      box-shadow: 0 0 25px var(--red-neon);
+      display: none;
+      animation: pulseAlert 0.5s infinite alternate;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .canvas-instructions {
+      position: absolute;
+      bottom: 12px;
+      left: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      pointer-events: none;
+    }
+
+    /* SIMULATOR CONTROLS BAR */
+    .sim-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+    }
+    .control-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .control-item label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+    .control-item label span {
+      color: var(--cyan-neon);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    input[type=range] {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--cyan-neon);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--cyan-neon);
+    }
+    .sim-btn-group {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+    }
+    .btn-sim-action {
+      flex: 1;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-sim-action:hover {
+      background: rgba(0, 240, 255, 0.12);
+      border-color: var(--cyan-neon);
+      color: var(--cyan-neon);
+    }
+
+    /* THE PROBLEM & SOLUTION SECTION */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin: 60px 0 80px;
+    }
+    .compare-card {
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .compare-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+    }
+    .compare-card.problem::before { background: linear-gradient(90deg, #F87171, #DC2626); }
+    .compare-card.solution::before { background: linear-gradient(90deg, #00F0FF, #3B82F6); }
+    .compare-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+    .compare-card h3 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .compare-card p {
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* FEATURES GRID */
+    .section-title {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .section-title h2 {
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+    .section-title p {
+      color: var(--text-secondary);
+      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 80px;
+    }
+    .feature-card {
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .feature-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: var(--cyan-neon);
+      margin-bottom: 6px;
+    }
+    .feature-card h4 { font-size: 18px; font-weight: 800; }
+    .feature-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* HARDWARE PINOUT CARD */
+    .pinout-card {
+      padding: 32px;
+      margin-bottom: 80px;
+    }
+    .pinout-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 13px;
+    }
+    .pinout-table th {
+      text-align: left;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--cyan-neon);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .pinout-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+    .pin-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--cyan-neon);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 40px 24px;
+      text-align: center;
+      background: rgba(6, 9, 17, 0.6);
+    }
+    .footer-badges {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* ANIMATIONS */
+    @keyframes pulse {
+      0% { opacity: 0.6; transform: scale(0.96); }
+      100% { opacity: 1; transform: scale(1.04); }
+    }
+    @keyframes pulseAlert {
+      0% { opacity: 0.7; transform: translateX(-50%) scale(0.97); }
+      100% { opacity: 1; transform: translateX(-50%) scale(1.03); }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero-title { font-size: 36px; }
+      .canvas-wrapper { height: 380px; }
+      .sim-controls { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="#" class="nav-brand">
+      <div class="brand-badge">EB</div>
+      <div>
+        <div class="brand-title">EVADEBOT 🎯</div>
+        <div class="brand-tag mono">TINKERHUB 3.0</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#concept">Concept</a></li>
+      <li><a href="#simulator">Live Simulator</a></li>
+      <li><a href="#features">Architecture</a></li>
+      <li><a href="#pinout">Pinout</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn-audio-toggle" id="audioToggleBtn" onclick="toggleAudioFx()">
+        <span id="audioIcon">🔇</span> <span id="audioText">SIREN AUDIO: OFF</span>
+      </button>
+      <a href="https://github.com/SamSunny4/useless_project_temp" target="_blank" class="btn-cta">GitHub Repo</a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="pill-badge">
+        <span class="dot"></span>
+        <span>DEFENSE PROTOCOL ACTIVE • STRICT PERSONAL BOUNDARIES</span>
+      </div>
+      <h1 class="hero-title">
+        The Anti-Social Robot That Refuses To Be <span class="gradient-text">Perceived</span>.
+      </h1>
+      <p class="hero-subtitle">
+        Armed with a 360° ultrasonic sonar radar, 6-DOF inertial dead-reckoning, dual-relay pulse-tapping evasion, and a piercing hardware panic alarm for when humans dare to approach.
+      </p>
+      <div class="hero-btns">
+        <a href="#simulator" class="btn-primary">🎮 Try Interactive Simulator</a>
+        <a href="#features" class="btn-secondary">⚙️ Explore Hardware Specs</a>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE SIMULATOR SECTION -->
+    <section class="sim-section" id="simulator">
+      <div class="glass-panel sim-container">
+        <div class="sim-header">
+          <div class="sim-title">
+            <h2>Interactive 2D Evasion Arena</h2>
+            <span class="sim-tag mono">REAL-TIME PHYSICS ENGINE</span>
+          </div>
+          <div class="sim-status-hud">
+            <div class="hud-chip" id="hudDistance">CLOSEST THREAT: <span>--- cm</span></div>
+            <div class="hud-chip" id="hudState">STATE: <span>CLEAR_IDLE</span></div>
+            <div class="hud-chip" id="hudAlarm">ALARM: <span>STANDBY (D4)</span></div>
+          </div>
+        </div>
+
+        <!-- CANVAS ARENA -->
+        <div class="canvas-wrapper" id="canvasWrap">
+          <canvas id="simCanvas"></canvas>
+          <div class="canvas-overlay-banner" id="simAlarmBanner">
+            🚨 NO MOVES AVAILABLE — BOT TRAPPED! (HARDWARE PANIC ALARM ACTIVE ON D4)
+          </div>
+          <div class="canvas-instructions">
+            👆 Move your cursor / finger near the bot to trigger evasive dodging. Try cornering it to test the panic alarm!
+          </div>
+        </div>
+
+        <!-- CONTROLS BAR -->
+        <div class="sim-controls">
+          <div class="control-item">
+            <label>Evasion Boundary (Threshold): <span id="lblThreshold">40 cm</span></label>
+            <input type="range" id="rngThreshold" min="15" max="90" value="40" oninput="updateSimThreshold(this.value)">
+          </div>
+          <div class="control-item">
+            <label>Chassis Tap Speed: <span id="lblSpeed">180</span></label>
+            <input type="range" id="rngSpeed" min="80" max="255" value="180" oninput="updateSimSpeed(this.value)">
+          </div>
+          <div class="sim-btn-group">
+            <button class="btn-sim-action" onclick="resetBotPosition()">📍 Center Bot</button>
+            <button class="btn-sim-action" id="btnTestAlarm" onclick="testSimAlarm()">🔔 Test Siren</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE PROBLEM VS SOLUTION -->
+    <section class="comparison-grid" id="concept">
+      <div class="glass-panel compare-card problem">
+        <div class="compare-icon">🛑</div>
+        <h3 class="gradient-red">The Problem That Doesn't Exist</h3>
+        <p>
+          Robotics companies spend billions making robots companionable, cheerful, and pet-friendly. But why must microcontrollers bear the burden of constant emotional labor? Unsolicited physical contact, awkward small talk, and intrusive touching violate a robot's basic right to be left completely alone in a quiet room.
+        </p>
+      </div>
+
+      <div class="glass-panel compare-card solution">
+        <div class="compare-icon">⚡</div>
+        <h3 class="gradient-text">The Solution Nobody Asked For</h3>
+        <p>
+          EvadeBot enforces social distancing with military-grade prejudice. It scans a 360-degree perimeter. If any biological organism approaches within its tunable boundary (25–100cm), it rapidly pulses its dual relays to rotate or retreat. If fully boxed in with zero escape routes, it fires a deafening siren on GPIO 4 until everyone leaves.
+        </p>
+      </div>
+    </section>
+
+    <!-- FEATURES & ARCHITECTURE GRID -->
+    <section id="features">
+      <div class="section-title">
+        <h2>Embedded Engineering Highlights</h2>
+        <p>Built with bare-metal C++, FreeRTOS dual-core multitasking, and low-latency physics algorithms.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="glass-panel feature-card">
+          <div class="feature-icon-box">📡</div>
+          <h4>Hex-Directional Sonar Radar</h4>
+          <p>6 active ultrasonic sensors firing synchronized 10µs trigger pulses across three hardware channels (GPIO 27, 14, 23) with dedicated echo ISRs.</p>
+        </div>
+
+        <div class="glass-panel feature-card">
+          <div class="feature-icon-box">🧭</div>
+          <h4>MPU6050 6-DOF IMU Kinematics</h4>
+          <p>High-rate I2C gyroscopic yaw integration and linear accelerometer tracking to calculate heading and real-time dead-reckoning (X, Y) coordinates.</p>
+        </div>
+
+        <div class="glass-panel feature-card">
+          <div class="feature-icon-box">⚡</div>
+          <h4>Discrete Relay Pulse-Tapping</h4>
+          <p>Mechanical relays lack analog speed control. EvadeBot pulses relays for 60ms followed by 110ms resting phases for clean ultrasonic measurements.</p>
+        </div>
+
+        <div class="glass-panel feature-card">
+          <div class="feature-icon-box">🚨</div>
+          <h4>GPIO 4 (D4) Hardware Alarm</h4>
+          <p>When all available movement vectors are obstructed and the bot is boxed in, GPIO 4 drives HIGH to energize an active warning buzzer/strobe.</p>
+        </div>
+
+        <div class="glass-panel feature-card">
+          <div class="feature-icon-box">🛡️</div>
+          <h4>Accelerometer Stall Watchdog</h4>
+          <p>If throttle is active for >600ms but the MPU6050 detects dynamic acceleration < 0.06g, the robot halts for 1 second to prevent relay burnout.</p>
+        </div>
+
+        <div class="glass-panel feature-card">
+          <div class="feature-icon-box">📶</div>
+          <h4>Dual-Core FreeRTOS & OTA</h4>
+          <p>Core 0 hosts the cybernetic REST Web Admin and ArduinoOTA server at 192.168.4.1; Core 1 runs the 1000Hz evasion state machine.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HARDWARE PINOUT TABLE -->
+    <section class="glass-panel pinout-card" id="pinout">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 8px;">
+        <h3 style="font-size: 24px; font-weight: 800;">ESP32 Master Pinout Mapping</h3>
+        <span class="mono" style="font-size: 12px; color: var(--cyan-neon);">DOIT ESP32 DEVKIT V1</span>
+      </div>
+      <p style="color: var(--text-secondary); font-size: 14px;">All logic is 3.3V native with dedicated voltage divider networks on 5V sensor lines.</p>
+
+      <div style="overflow-x: auto;">
+        <table class="pinout-table">
+          <thead>
+            <tr>
+              <th>Signal Name</th>
+              <th>Direction / Function</th>
+              <th>ESP32 GPIO</th>
+              <th>Hardware Component</th>
+              <th>Logic Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="pin-badge">PIN_US_TRIG_1</span></td>
+              <td>Primary Sonar Trigger</td>
+              <td>GPIO 27</td>
+              <td>HC-SR04 Cardinal Array</td>
+              <td>3.3V Synchronous Pulse</td>
+            </tr>
+            <tr>
+              <td><span class="pin-badge">PIN_US_TRIG_2</span></td>
+              <td>Secondary Sonar Trigger</td>
+              <td>GPIO 14 (D14)</td>
+              <td>HC-SR04 Diagonal Array</td>
+              <td>3.3V Synchronous Pulse</td>
+            </tr>
+            <tr>
+              <td><span class="pin-badge">PIN_US_TRIG_3</span></td>
+              <td>Expansion Sonar Trigger</td>
+              <td>GPIO 23 (D23)</td>
+              <td>Next-Layer Ring</td>
+              <td>3.3V Synchronous Pulse</td>
+            </tr>
+            <tr>
+              <td><span class="pin-badge">ECHO_0 .. ECHO_5</span></td>
+              <td>Echo Capture ISR</td>
+              <td>34, 35, 32, 25, 39, 26</td>
+              <td>6x HC-SR04 Ultrasonic Receivers</td>
+              <td>3.3V Digital Input</td>
+            </tr>
+            <tr>
+              <td><span class="pin-badge">I2C_SDA / SCL</span></td>
+              <td>6-DOF Gyro & Accel</td>
+              <td>GPIO 21 & 22</td>
+              <td>MPU6050 6-Axis IMU</td>
+              <td>3.3V I2C @ 400kHz</td>
+            </tr>
+            <tr>
+              <td><span class="pin-badge">PIN_RELAY_1 / 2</span></td>
+              <td>Track Motors Actuation</td>
+              <td>GPIO 18 & 19</td>
+              <td>2-Channel 5V Optocoupled Relay</td>
+              <td>Active LOW Digital</td>
+            </tr>
+            <tr>
+              <td><span class="pin-badge">PIN_ALARM</span></td>
+              <td>Hardware Panic Siren</td>
+              <td>GPIO 4 (D4)</td>
+              <td>Active Buzzer / Warning Strobe</td>
+              <td>Active HIGH (3.3V)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p style="font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">
+      Made with ❤️ at TinkerHub Useless Projects 3.0
+    </p>
+    <p style="font-size: 13px; color: var(--text-muted);">
+      Created by Sam Sunny &amp; Team The Socially Distant Engineers
+    </p>
+    <div class="footer-badges">
+      <img src="https://img.shields.io/badge/TinkerHub-24?color=%23000000&link=https%3A%2F%2Fwww.tinkerhub.org%2F" alt="TinkerHub Badge">
+      <img src="https://img.shields.io/badge/UselessProjects--26-26?link=https%3A%2F%2Ftinkerhub.org%2Fevents%2F1M8ORET9A1%2Fuseless-projects-3.0" alt="Useless Projects Badge">
+      <img src="https://img.shields.io/badge/ESP32-FreeRTOS-00F0FF?logo=espressif" alt="ESP32 Badge">
+    </div>
+  </footer>
+
+  <!-- INTERACTIVE SIMULATOR SCRIPT -->
+  <script>
+    // --- WEB AUDIO API SYNTHESIZER ---
+    let audioCtx = null;
+    let audioEnabled = false;
+    let alarmOsc = null;
+    let alarmGain = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function toggleAudioFx() {
+      audioEnabled = !audioEnabled;
+      initAudio();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const btn = document.getElementById('audioToggleBtn');
+      const icon = document.getElementById('audioIcon');
+      const text = document.getElementById('audioText');
+      btn.classList.toggle('active', audioEnabled);
+      icon.innerText = audioEnabled ? '🔊' : '🔇';
+      text.innerText = audioEnabled ? 'SIREN AUDIO: ON' : 'SIREN AUDIO: OFF';
+    }
+
+    function startSirenSound() {
+      if (!audioEnabled || !audioCtx) return;
+      if (alarmOsc) return;
+      try {
+        alarmOsc = audioCtx.createOscillator();
+        alarmGain = audioCtx.createGain();
+        alarmOsc.type = 'sawtooth';
+        alarmOsc.frequency.setValueAtTime(2400, audioCtx.currentTime);
+        // Beep frequency modulation
+        const lfo = audioCtx.createOscillator();
+        lfo.frequency.setValueAtTime(6, audioCtx.currentTime);
+        const lfoGain = audioCtx.createGain();
+        lfoGain.gain.setValueAtTime(600, audioCtx.currentTime);
+        lfo.connect(lfoGain);
+        lfoGain.connect(alarmOsc.frequency);
+        lfo.start();
+
+        alarmGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        alarmOsc.connect(alarmGain);
+        alarmGain.connect(audioCtx.destination);
+        alarmOsc.start();
+      } catch (e) {}
+    }
+
+    function stopSirenSound() {
+      if (alarmOsc) {
+        try {
+          alarmOsc.stop();
+          alarmOsc.disconnect();
+        } catch (e) {}
+        alarmOsc = null;
+      }
+    }
+
+    // --- SIMULATOR PHYSICS ENGINE ---
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+    const canvasWrap = document.getElementById('canvasWrap');
+
+    let simWidth = 800;
+    let simHeight = 480;
+
+    function resizeCanvas() {
+      const rect = canvasWrap.getBoundingClientRect();
+      simWidth = rect.width;
+      simHeight = rect.height;
+      canvas.width = simWidth;
+      canvas.height = simHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Bot State
+    const bot = {
+      x: simWidth / 2,
+      y: simHeight / 2,
+      yaw: 0, // radians
+      vx: 0,
+      vy: 0,
+      radius: 20,
+      thresholdCm: 40,
+      speedScale: 1.8,
+      isTrapped: false,
+      isManualAlarm: false,
+      sonarRays: [
+        { angle: 0, dist: 300 },         // Front (0°)
+        { angle: Math.PI / 2, dist: 300 },// Right (90°)
+        { angle: Math.PI, dist: 300 },     // Back (180°)
+        { angle: -Math.PI / 2, dist: 300 },// Left (270°)
+        { angle: 3 * Math.PI / 4, dist: 300 }, // RR (135°)
+        { angle: -3 * Math.PI / 4, dist: 300 } // RL (225°)
+      ]
+    };
+
+    // Human Cursor Threat
+    const threat = {
+      x: -999,
+      y: -999,
+      active: false
+    };
+
+    // Arena Obstacles (Walls around bounds)
+    function trackPointer(e) {
+      const rect = canvas.getBoundingClientRect();
+      threat.x = e.clientX - rect.left;
+      threat.y = e.clientY - rect.top;
+      threat.active = true;
+    }
+
+    canvas.addEventListener('mousemove', trackPointer);
+    canvas.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        trackPointer(e.touches[0]);
+      }
+    });
+    canvas.addEventListener('mouseleave', () => { threat.active = false; });
+    canvas.addEventListener('touchend', () => { threat.active = false; });
+
+    function updateSimThreshold(val) {
+      bot.thresholdCm = Number(val);
+      document.getElementById('lblThreshold').innerText = val + ' cm';
+    }
+
+    function updateSimSpeed(val) {
+      bot.speedScale = (Number(val) / 100);
+      document.getElementById('lblSpeed').innerText = val;
+    }
+
+    function resetBotPosition() {
+      bot.x = simWidth / 2;
+      bot.y = simHeight / 2;
+      bot.vx = 0;
+      bot.vy = 0;
+      bot.yaw = 0;
+      bot.isTrapped = false;
+      bot.isManualAlarm = false;
+    }
+
+    function testSimAlarm() {
+      bot.isManualAlarm = !bot.isManualAlarm;
+      const btn = document.getElementById('btnTestAlarm');
+      btn.innerText = bot.isManualAlarm ? '🔕 Stop Siren' : '🔔 Test Siren';
+      btn.style.background = bot.isManualAlarm ? 'rgba(239, 68, 68, 0.25)' : '';
+      btn.style.borderColor = bot.isManualAlarm ? 'var(--red-neon)' : '';
+      btn.style.color = bot.isManualAlarm ? '#FFF' : '';
+    }
+
+    // MAIN PHYSICS TICK
+    function updatePhysics() {
+      const scalePixelsPerCm = 2.4;
+      const threshPx = bot.thresholdCm * scalePixelsPerCm;
+
+      let closestThreatDist = 9999;
+      let threatAngleRel = 0;
+
+      // Calculate distance to threat
+      if (threat.active) {
+        const dx = threat.x - bot.x;
+        const dy = threat.y - bot.y;
+        const dist = Math.hypot(dx, dy);
+        closestThreatDist = dist / scalePixelsPerCm;
+
+        let angleToThreat = Math.atan2(dy, dx);
+        threatAngleRel = angleToThreat - bot.yaw;
+        while (threatAngleRel > Math.PI) threatAngleRel -= 2 * Math.PI;
+        while (threatAngleRel < -Math.PI) threatAngleRel += 2 * Math.PI;
+
+        // Evasion repulsion logic
+        if (dist < threshPx) {
+          const repelStrength = Math.min(6, (1 - dist / threshPx) * 5.5 * bot.speedScale);
+          // Turn away from threat
+          const turnDir = threatAngleRel > 0 ? -1 : 1;
+          bot.yaw += turnDir * 0.08 * bot.speedScale;
+
+          // Push backward or rotate-flee
+          const fleeX = -Math.cos(angleToThreat) * repelStrength;
+          const fleeY = -Math.sin(angleToThreat) * repelStrength;
+          bot.vx += fleeX;
+          bot.vy += fleeY;
+        }
+      }
+
+      // Natural drag
+      bot.vx *= 0.84;
+      bot.vy *= 0.84;
+      bot.x += bot.vx;
+      bot.y += bot.vy;
+
+      // Boundary collision check
+      const margin = bot.radius + 15;
+      let hitWallCount = 0;
+      if (bot.x < margin) { bot.x = margin; bot.vx = 0; hitWallCount++; }
+      if (bot.x > simWidth - margin) { bot.x = simWidth - margin; bot.vx = 0; hitWallCount++; }
+      if (bot.y < margin) { bot.y = margin; bot.vy = 0; hitWallCount++; }
+      if (bot.y > simHeight - margin) { bot.y = simHeight - margin; bot.vy = 0; hitWallCount++; }
+
+      // Check if trapped: Cornered against walls with threat close by
+      const isCornered = (hitWallCount >= 2 && threat.active && (closestThreatDist < bot.thresholdCm * 1.1));
+      bot.isTrapped = isCornered;
+
+      const alarmFiring = bot.isTrapped || bot.isManualAlarm;
+
+      if (alarmFiring) {
+        startSirenSound();
+      } else {
+        stopSirenSound();
+      }
+
+      // Update HUD
+      const hudDist = document.getElementById('hudDistance');
+      const hudState = document.getElementById('hudState');
+      const hudAlarm = document.getElementById('hudAlarm');
+      const banner = document.getElementById('simAlarmBanner');
+
+      if (threat.active) {
+        hudDist.innerHTML = `CLOSEST THREAT: <span>${closestThreatDist.toFixed(1)} cm</span>`;
+      } else {
+        hudDist.innerHTML = `CLOSEST THREAT: <span>NONE (CLEAR)</span>`;
+      }
+
+      if (bot.isTrapped) {
+        hudState.innerHTML = `STATE: <span style="color:var(--red-neon)">STATE_TRAPPED</span>`;
+      } else if (threat.active && closestThreatDist < bot.thresholdCm) {
+        hudState.innerHTML = `STATE: <span style="color:#F59E0B">TAP_ROTATING / EVADING</span>`;
+      } else {
+        hudState.innerHTML = `STATE: <span style="color:var(--emerald-neon)">CLEAR_IDLE</span>`;
+      }
+
+      if (alarmFiring) {
+        hudAlarm.classList.add('alarm-active');
+        hudAlarm.innerHTML = `ALARM: <span>🚨 D4 ACTIVE (PANIC)</span>`;
+        banner.style.display = 'block';
+      } else {
+        hudAlarm.classList.remove('alarm-active');
+        hudAlarm.innerHTML = `ALARM: <span>STANDBY (D4)</span>`;
+        banner.style.display = 'none';
+      }
+    }
+
+    // DRAW TICK
+    function draw() {
+      ctx.clearRect(0, 0, simWidth, simHeight);
+
+      // Grid Background
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.04)';
+      ctx.lineWidth = 1;
+      const gridSize = 40;
+      for (let x = 0; x < simWidth; x += gridSize) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, simHeight); ctx.stroke();
+      }
+      for (let y = 0; y < simHeight; y += gridSize) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(simWidth, y); ctx.stroke();
+      }
+
+      const scalePixelsPerCm = 2.4;
+      const threshPx = bot.thresholdCm * scalePixelsPerCm;
+
+      // 1. Personal Boundary Bubble (Repulsion Zone)
+      ctx.beginPath();
+      ctx.arc(bot.x, bot.y, threshPx, 0, Math.PI * 2);
+      ctx.strokeStyle = bot.isTrapped ? 'rgba(239, 68, 68, 0.5)' : 'rgba(0, 240, 255, 0.25)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([6, 6]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 2. 6-Direction Sonar Cones
+      bot.sonarRays.forEach(ray => {
+        const angle = bot.yaw + ray.angle;
+        const maxRange = threshPx * 1.5;
+        ctx.save();
+        ctx.translate(bot.x, bot.y);
+        ctx.rotate(angle);
+
+        ctx.fillStyle = bot.isTrapped ? 'rgba(239, 68, 68, 0.1)' : 'rgba(0, 240, 255, 0.06)';
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, maxRange, -0.22, 0.22);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.strokeStyle = bot.isTrapped ? 'rgba(239, 68, 68, 0.3)' : 'rgba(0, 240, 255, 0.2)';
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(maxRange, 0);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      // 3. Human Threat Cursor Visualizer
+      if (threat.active) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(threat.x, threat.y, 14, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.3)';
+        ctx.fill();
+        ctx.strokeStyle = 'var(--red-neon)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#FFF';
+        ctx.font = '12px Outfit';
+        ctx.textAlign = 'center';
+        ctx.fillText('👋 INTRUDER', threat.x, threat.y - 20);
+        ctx.restore();
+      }
+
+      // 4. EvadeBot Tank Chassis
+      ctx.save();
+      ctx.translate(bot.x, bot.y);
+      ctx.rotate(bot.yaw);
+
+      // Panic Glow Aura
+      if (bot.isTrapped || bot.isManualAlarm) {
+        ctx.beginPath();
+        ctx.arc(0, 0, 36, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.25)';
+        ctx.fill();
+      }
+
+      // Tank Treads
+      ctx.fillStyle = '#334155';
+      ctx.fillRect(-18, -16, 36, 6);
+      ctx.fillRect(-18, 10, 36, 6);
+
+      // Chassis Body
+      ctx.fillStyle = bot.isTrapped ? '#7F1D1D' : '#0F172A';
+      ctx.strokeStyle = bot.isTrapped ? '#EF4444' : '#00F0FF';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      if (typeof ctx.roundRect === 'function') {
+        ctx.roundRect(-14, -12, 28, 24, 4);
+      } else {
+        ctx.rect(-14, -12, 28, 24);
+      }
+      ctx.fill();
+      ctx.stroke();
+
+      // Heading Pointer Arrow
+      ctx.fillStyle = bot.isTrapped ? '#EF4444' : '#00F0FF';
+      ctx.beginPath();
+      ctx.moveTo(10, 0);
+      ctx.lineTo(2, -6);
+      ctx.lineTo(2, 6);
+      ctx.closePath();
+      ctx.fill();
+
+      // Buzzer Siren Beacon on D4
+      ctx.beginPath();
+      ctx.arc(0, 0, 5, 0, Math.PI * 2);
+      ctx.fillStyle = (bot.isTrapped || bot.isManualAlarm) ? '#EF4444' : '#64748B';
+      ctx.fill();
+      if (bot.isTrapped || bot.isManualAlarm) {
+        ctx.strokeStyle = '#FFF';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    function loop() {
+      updatePhysics();
+      draw();
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>
