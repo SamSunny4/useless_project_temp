@@ -193,17 +193,17 @@ The MPU6050 provides real-time gyro yaw integration and dynamic linear accelerat
 
 ---
 
-## 7. Hardware Alarm / Buzzer (GPIO 4)
+## 7. Self-Defense High-Voltage Taser Module (GPIO 4 / D4)
 
-When autonomous evasion determines that **no more moves are available** (front and both rotation flanks blocked, or bot is trapped), the ESP32 energizes **GPIO 4 (D4)** to drive an audible alarm buzzer or warning strobe.
+When autonomous evasion determines that **no more moves are available** (front and both rotation flanks blocked, or bot is trapped), the ESP32 energizes **GPIO 4 (D4)** to trigger the high-voltage Taser / electric stun module for active personal space defense.
 
 ```
-[ ESP32 GPIO 4 (D4) ] ---> [ Active Buzzer (+) / Alarm LED Anode (+) ]
-[ ESP32 GND         ] ---> [ Active Buzzer (-) / Alarm LED Cathode (-) ]
+[ ESP32 GPIO 4 (D4) ] ---> [ High-Voltage Taser Relay / Arc Module Trigger IN (+) ]
+[ ESP32 GND         ] ---> [ Taser Module Ground Return (-) ]
 ```
 
 - **Logic**: Driven **HIGH** (3.3V) when trapped / no moves available; driven **LOW** (0V) when an open path is detected.
-- **Standalone Operation**: Raspberry Pi UART communication has been removed; the robot is fully autonomous and remotely managed via Wi-Fi Web Admin.
+- **Safety Control**: Can be tested or disarmed manually from the Web Controller or via keyboard spacebar.
 
 ---
 
@@ -212,7 +212,7 @@ When autonomous evasion determines that **no more moves are available** (front a
 | ESP32 GPIO | Direction | Connected Peripheral | Voltage | Notes |
 | :--- | :--- | :--- | :--- | :--- |
 | **GPIO 2** | Output | Built-in Status LED | 3.3V | Blinks when WiFi connected, OFF on disconnect/E-Stop |
-| **GPIO 4** | Output | **Hardware Alarm / Buzzer (D4)** | 3.3V | **HIGH when trapped / no moves available** |
+| **GPIO 4** | Output | **High-Voltage Defense Taser Module (D4)** | 3.3V | **HIGH when trapped / no moves available** |
 | **GPIO 18** | Output | Relay 1 (Left Motors) | 5V Opto | Active LOW |
 | **GPIO 19** | Output | Relay 2 (Right Motors) | 5V Opto | Active LOW |
 | **GPIO 27** | Output | Ultrasonic Trigger 1 | 3.3V/5V | Primary trigger (S0..S3 Cardinal) |

@@ -17,7 +17,7 @@
 ---
 
 ### Project Description
-EVade is a hyper-vigilant, ultra-anti-social autonomous tracked robot engineered with one singular purpose: **to avoid any and all human contact at all costs**. Armed with a 360-degree hex-directional ultrasonic echolocation array, a 6-DOF MPU6050 inertial measurement unit, dual-channel relay pulse-tap speed modulation, and a loud hardware panic siren (GPIO 4 / D4), EVade treats every approaching human as an existential threat to its introversion.
+EVade is a hyper-vigilant, ultra-anti-social autonomous tracked robot engineered with one singular purpose: **to avoid any and all human contact at all costs**. Armed with a 360-degree hex-directional ultrasonic echolocation array, a 6-DOF MPU6050 inertial measurement unit, dual-channel relay pulse-tap speed modulation, and an active self-defense **high-voltage Taser / stun module (GPIO 4 / D4)**, EVade treats every approaching human as an existential threat to its introversion.
 
 ---
 
@@ -33,8 +33,8 @@ Enter **EVade**: the world's most defensive introverted tank.
 
 1. **Strict Personal Boundary Zone (25cm – 100cm)**: Using a 6-sensor ultrasonic radar network firing synchronous 10µs pulses across three hardware trigger lines (GPIO 27, 14, 23), EVade continuously monitors all 360° of its perimeter.
 2. **Instant Flight Response**: If any human, hand, or pet breaches its personal boundary, EVade calculates dynamic repulsion vectors and rapidly fires discrete relay taps to rotate away or sprint in reverse.
-3. **Hardware Panic Siren (GPIO 4 / D4)**: If you corner EVade against a wall or box it in with no escape routes available, it enters full sensory overload: cutting its motors and blaring a piercing hardware alarm siren on pin D4 until you walk away and give it space.
-4. **Wireless Web Controller with Tap-to-Mute**: An embedded cybernetic Web Portal hosted directly from the ESP32's Access Point (`http://192.168.4.1`) featuring a real-time radar visualizer, 2D dead-reckoning arena canvas, instant spacebar emergency stop, and a web alarm test / mute button.
+3. **Self-Defense Taser Discharge (GPIO 4 / D4)**: If you corner EVade against a wall or box it in with no escape routes available, it resorts to violent self-defense: cutting its motors and discharging its high-voltage electric Taser module on pin D4 until the intruder backs away and gives it space.
+4. **Wireless Web Controller with Tap-to-Disarm**: An embedded cybernetic Web Portal hosted directly from the ESP32's Access Point (`http://192.168.4.1`) featuring a real-time radar visualizer, 2D dead-reckoning arena canvas, instant spacebar emergency stop, and a web Taser test / disarm button.
 
 ---
 
@@ -64,7 +64,7 @@ Enter **EVade**: the world's most defensive introverted tank.
 - **Inertial Measurement Unit**: MPU6050 6-DOF Sensor (I2C Fast Mode @ 400kHz on SDA: GPIO 21, SCL: GPIO 22)
 - **Motor Control & Actuation**: 2-Channel 5V Optocoupled Relay Module (IN1: GPIO 18, IN2: GPIO 19)
   - Discrete relay pulse-tapping engine (tunable 60ms ON / 110ms OFF intervals) for controllable slow-speed evasion without scorching relays
-- **Hardware Panic Alarm**: 5V/3.3V Active Piezo Siren / Warning Strobe driven by **GPIO 4 (D4)**
+- **Self-Defense Taser Module**: High-voltage electric stun arc / Taser circuit driven by **GPIO 4 (D4)**
 - **Locomotion**: Dual High-Torque DC Gearmotors with High-Traction Rubberized Tank Treads
 - **Power Architecture**: Isolated dual-rail Li-ion battery supplies with common ground reference
 
@@ -103,11 +103,11 @@ All sensors share synchronous 10µs trigger pulses with independent interrupt-dr
 | **Relay 1 (IN1)** | **GPIO 18** | LOW | Left Track Drive Pulse |
 | **Relay 2 (IN2)** | **GPIO 19** | LOW | Right Track Drive Pulse |
 
-### 4. Hardware Panic Siren
+### 4. High-Voltage Taser Defense Circuit
 | Component Pin | ESP32 GPIO | Logic State | Function |
 | :--- | :--- | :--- | :--- |
-| **Buzzer (+) / Strobe (+)** | **GPIO 4 (D4)** | HIGH (3.3V) | Active Panic Alarm when bot has zero moves available |
-| **Buzzer (-) / Strobe (-)** | **GND** | Ground | Common Return |
+| **Taser Trigger / Relay IN** | **GPIO 4 (D4)** | HIGH (3.3V) | Discharges electric Taser arc when bot has zero moves available |
+| **Taser Ground (-)** | **GND** | Ground | Common Return |
 
 ---
 
@@ -161,7 +161,7 @@ All sensors share synchronous 10µs trigger pulses with independent interrupt-dr
 <p align="center">
   <img src="EVade.jpeg" alt="EVade Autonomous Robot Build" width="600" style="border-radius: 12px;" />
   <br>
-  <em>EVade Hardware Prototype: Tracked chassis with 360° ultrasonic echolocation, MPU6050 IMU, dual relays, and D4 alarm</em>
+  <em>EVade Hardware Prototype: Tracked chassis with 360° ultrasonic echolocation, MPU6050 IMU, dual relays, and D4 self-defense Taser</em>
 </p>
 
 ### Architecture & System Workflow
@@ -185,8 +185,8 @@ flowchart TD
 
     subgraph ALARM_AND_ACTUATION["3. Actuation & Alarm Enforcement"]
         MOTORS["Dual Relay Tapping<br/>(IN1: GPIO 18, IN2: GPIO 19)"]
-        ALARM["HARDWARE PANIC SIREN<br/>GPIO 4 (D4) HIGH"]
-        WEB["Core 0 Web Server (192.168.4.1)<br/>Live Radar, Odometry, Spacebar E-Stop, Alarm Mute"]
+        ALARM["SELF-DEFENSE TASER<br/>GPIO 4 (D4) HIGH"]
+        WEB["Core 0 Web Server (192.168.4.1)<br/>Live Radar, Odometry, Spacebar E-Stop, Taser Disarm"]
     end
 
     TRIG --> SENS
@@ -210,8 +210,8 @@ flowchart TD
    - If throttle is commanded ON but the MPU6050 accelerometer registers no dynamic acceleration for $> 600\text{ms}$ ($\Delta a < 0.06g$), the bot detects it is caught against an immovable obstacle and triggers an automatic 1-second E-Stop cut to protect the motor relays.
 3. **Spacebar Quick Emergency Stop**:
    - Instant safety cutoff directly from the web portal keyboard listener.
-4. **Smart Alarm Silencing**:
-   - Silencing the buzzer via the Web Portal or clicking the alert banner mutes pin D4 immediately while the bot remains trapped. As soon as the human walks away and the path clears, the silence flag auto-resets for the next defensive event.
+4. **Smart Taser Disarming & Safety Cutoff**:
+   - Disarming the Taser via the Web Portal or clicking the alert banner cuts pin D4 immediately while the bot remains trapped. As soon as the human steps away and the path clears, the safety flag auto-resets for the next defensive encounter.
 
 ---
 

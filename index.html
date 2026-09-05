@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EVade | The Anti-Social Evasion Droid 🎯</title>
-  <meta name="description" content="EVade is an aggressively anti-social autonomous tracked robot built for TinkerHub Useless Projects 3.0. Armed with 360° ultrasonic echolocation, MPU6050 IMU, dual-relay pulse tapping, and a hardware panic alarm.">
+  <meta name="description" content="EVade is an aggressively anti-social autonomous tracked robot built for TinkerHub Useless Projects 3.0. Armed with 360° ultrasonic echolocation, MPU6050 IMU, dual-relay pulse tapping, and a self-defense electric taser.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -600,7 +600,7 @@
     </ul>
     <div class="nav-actions">
       <button class="btn-audio-toggle" id="audioToggleBtn" onclick="toggleAudioFx()">
-        <span id="audioIcon">🔇</span> <span id="audioText">SIREN AUDIO: OFF</span>
+        <span id="audioIcon">🔇</span> <span id="audioText">TASER AUDIO: OFF</span>
       </button>
       <a href="https://github.com/SamSunny4/useless_project_temp" target="_blank" class="btn-cta">GitHub Repo</a>
     </div>
@@ -619,7 +619,7 @@
         The Anti-Social Robot That Refuses To Be <span class="gradient-text">Perceived</span>.
       </h1>
       <p class="hero-subtitle">
-        Armed with a 360° ultrasonic sonar radar, 6-DOF inertial dead-reckoning, dual-relay pulse-tapping evasion, and a piercing hardware panic alarm for when humans dare to approach.
+        Armed with a 360° ultrasonic sonar radar, 6-DOF inertial dead-reckoning, dual-relay pulse-tapping evasion, and a high-voltage self-defense taser for when humans dare to approach.
       </p>
       <div class="hero-btns">
         <a href="#simulator" class="btn-primary">🎮 Try Interactive Simulator</a>
@@ -647,7 +647,7 @@
           <div class="sim-status-hud">
             <div class="hud-chip" id="hudDistance">CLOSEST THREAT: <span>--- cm</span></div>
             <div class="hud-chip" id="hudState">STATE: <span>CLEAR_IDLE</span></div>
-            <div class="hud-chip" id="hudAlarm">ALARM: <span>STANDBY (D4)</span></div>
+            <div class="hud-chip" id="hudAlarm">DEFENSE: <span>TASER STANDBY (D4)</span></div>
           </div>
         </div>
 
@@ -655,10 +655,10 @@
         <div class="canvas-wrapper" id="canvasWrap">
           <canvas id="simCanvas"></canvas>
           <div class="canvas-overlay-banner" id="simAlarmBanner">
-            🚨 NO MOVES AVAILABLE — BOT TRAPPED! (HARDWARE PANIC ALARM ACTIVE ON D4)
+            ⚡ NO MOVES AVAILABLE — BOT TRAPPED! (HIGH-VOLTAGE TASER ARMED & FIRING ON D4!)
           </div>
           <div class="canvas-instructions">
-            👆 Move your cursor / finger near the bot to trigger evasive dodging. Try cornering it to test the panic alarm!
+            👆 Move your cursor / finger near the bot to trigger evasive dodging. Try cornering it to test the defense taser!
           </div>
         </div>
 
@@ -674,7 +674,7 @@
           </div>
           <div class="sim-btn-group">
             <button class="btn-sim-action" onclick="resetBotPosition()">📍 Center Bot</button>
-            <button class="btn-sim-action" id="btnTestAlarm" onclick="testSimAlarm()">🔔 Test Siren</button>
+            <button class="btn-sim-action" id="btnTestAlarm" onclick="testSimAlarm()">⚡ Fire Taser</button>
           </div>
         </div>
       </div>
@@ -694,7 +694,7 @@
         <div class="compare-icon">⚡</div>
         <h3 class="gradient-text">The Solution Nobody Asked For</h3>
         <p>
-          EVade enforces social distancing with military-grade prejudice. It scans a 360-degree perimeter. If any biological organism approaches within its tunable boundary (25–100cm), it rapidly pulses its dual relays to rotate or retreat. If fully boxed in with zero escape routes, it fires a deafening siren on GPIO 4 until everyone leaves.
+          EVade enforces social distancing with military-grade prejudice. It scans a 360-degree perimeter. If any biological organism approaches within its tunable boundary (25–100cm), it rapidly pulses its dual relays to rotate or retreat. If fully boxed in with zero escape routes, it fires a high-voltage electric taser arc on GPIO 4 until everyone backs away.
         </p>
       </div>
     </section>
@@ -726,9 +726,9 @@
         </div>
 
         <div class="glass-panel feature-card">
-          <div class="feature-icon-box">🚨</div>
-          <h4>GPIO 4 (D4) Hardware Alarm</h4>
-          <p>When all available movement vectors are obstructed and the bot is boxed in, GPIO 4 drives HIGH to energize an active warning buzzer/strobe.</p>
+          <div class="feature-icon-box">⚡</div>
+          <h4>GPIO 4 (D4) Self-Defense Taser</h4>
+          <p>When all available movement vectors are obstructed and the bot is boxed in, GPIO 4 drives HIGH to discharge an active high-voltage electric taser arc.</p>
         </div>
 
         <div class="glass-panel feature-card">
@@ -809,9 +809,9 @@
             </tr>
             <tr>
               <td><span class="pin-badge">PIN_ALARM</span></td>
-              <td>Hardware Panic Siren</td>
+              <td>Self-Defense Taser Module</td>
               <td>GPIO 4 (D4)</td>
-              <td>Active Buzzer / Warning Strobe</td>
+              <td>High-Voltage Stun / Arc Circuit</td>
               <td>Active HIGH (3.3V)</td>
             </tr>
           </tbody>
@@ -858,8 +858,8 @@
       const icon = document.getElementById('audioIcon');
       const text = document.getElementById('audioText');
       btn.classList.toggle('active', audioEnabled);
-      icon.innerText = audioEnabled ? '🔊' : '🔇';
-      text.innerText = audioEnabled ? 'SIREN AUDIO: ON' : 'SIREN AUDIO: OFF';
+      icon.innerText = audioEnabled ? '⚡' : '🔇';
+      text.innerText = audioEnabled ? 'TASER AUDIO: ON' : 'TASER AUDIO: OFF';
     }
 
     function startSirenSound() {
@@ -869,17 +869,18 @@
         alarmOsc = audioCtx.createOscillator();
         alarmGain = audioCtx.createGain();
         alarmOsc.type = 'sawtooth';
-        alarmOsc.frequency.setValueAtTime(2400, audioCtx.currentTime);
-        // Beep frequency modulation
+        alarmOsc.frequency.setValueAtTime(180, audioCtx.currentTime); // 180Hz buzzing taser base
+        // Rapid electric spark pulse modulation
         const lfo = audioCtx.createOscillator();
-        lfo.frequency.setValueAtTime(6, audioCtx.currentTime);
+        lfo.type = 'square';
+        lfo.frequency.setValueAtTime(32, audioCtx.currentTime); // 32Hz crackle
         const lfoGain = audioCtx.createGain();
-        lfoGain.gain.setValueAtTime(600, audioCtx.currentTime);
+        lfoGain.gain.setValueAtTime(140, audioCtx.currentTime);
         lfo.connect(lfoGain);
         lfoGain.connect(alarmOsc.frequency);
         lfo.start();
 
-        alarmGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        alarmGain.gain.setValueAtTime(0.12, audioCtx.currentTime);
         alarmOsc.connect(alarmGain);
         alarmGain.connect(audioCtx.destination);
         alarmOsc.start();
@@ -983,7 +984,7 @@
     function testSimAlarm() {
       bot.isManualAlarm = !bot.isManualAlarm;
       const btn = document.getElementById('btnTestAlarm');
-      btn.innerText = bot.isManualAlarm ? '🔕 Stop Siren' : '🔔 Test Siren';
+      btn.innerText = bot.isManualAlarm ? '⚡ Disarm Taser' : '⚡ Fire Taser';
       btn.style.background = bot.isManualAlarm ? 'rgba(239, 68, 68, 0.25)' : '';
       btn.style.borderColor = bot.isManualAlarm ? 'var(--red-neon)' : '';
       btn.style.color = bot.isManualAlarm ? '#FFF' : '';
@@ -1072,11 +1073,11 @@
 
       if (alarmFiring) {
         hudAlarm.classList.add('alarm-active');
-        hudAlarm.innerHTML = `ALARM: <span>🚨 D4 ACTIVE (PANIC)</span>`;
+        hudAlarm.innerHTML = `DEFENSE: <span>⚡ TASER ARMED & FIRING (D4)</span>`;
         banner.style.display = 'block';
       } else {
         hudAlarm.classList.remove('alarm-active');
-        hudAlarm.innerHTML = `ALARM: <span>STANDBY (D4)</span>`;
+        hudAlarm.innerHTML = `DEFENSE: <span>TASER STANDBY (D4)</span>`;
         banner.style.display = 'none';
       }
     }

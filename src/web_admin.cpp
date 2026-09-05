@@ -596,15 +596,15 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     </div>
     <div style="text-align: center; font-size: 11px; color: var(--text-secondary); margin-top: 6px;">⌨️ Tap <b>[SPACE]</b> for quick E-Stop / Resume</div>
 
-    <!-- HARDWARE ALARM CONTROL -->
+    <!-- HARDWARE TASER CONTROL -->
     <div class="alarm-box">
       <button class="btn-alarm" id="alarmToggleBtn" onclick="toggleAlarm()">
-        <span id="alarmIcon">🔔</span> <span id="alarmBtnText">SOUND ALARM (D4 TEST)</span>
+        <span id="alarmIcon">⚡</span> <span id="alarmBtnText">FIRE TASER (D4 TEST)</span>
       </button>
     </div>
 
     <div class="stall-alert-banner" id="stallAlert">⚠️ STALL DETECTED: THROTTLE ACTIVE WITH NO ACCELERATION (1S E-STOP)</div>
-    <div class="alarm-alert-banner" id="alarmAlert" onclick="toggleAlarm()" style="cursor: pointer;" title="Click to silence alarm">🚨 NO MOVES AVAILABLE — BOT TRAPPED (HARDWARE ALARM ACTIVE ON PIN D4) • <u>TAP TO MUTE</u></div>
+    <div class="alarm-alert-banner" id="alarmAlert" onclick="toggleAlarm()" style="cursor: pointer;" title="Click to disarm Taser">⚡ NO MOVES AVAILABLE — BOT TRAPPED (HIGH-VOLTAGE TASER ACTIVE ON PIN D4) • <u>TAP TO DISARM</u></div>
 
     <!-- ULTRASONIC SENSOR RADAR CARD -->
     <div class="card" id="radarCard">
@@ -823,11 +823,11 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         if (alarmBtn) {
           alarmBtn.classList.toggle('active', isAlarm);
           if (isAlarm) {
-            if (alarmIcon) alarmIcon.innerText = '🔕';
-            if (alarmBtnText) alarmBtnText.innerText = isManual ? 'STOP MANUAL ALARM (D4 ACTIVE)' : 'SILENCE HARDWARE ALARM (TRAPPED)';
+            if (alarmIcon) alarmIcon.innerText = '⚡';
+            if (alarmBtnText) alarmBtnText.innerText = isManual ? 'DISARM MANUAL TASER (D4 DISCHARGING)' : 'DISARM DEFENSE TASER (TRAPPED)';
           } else {
-            if (alarmIcon) alarmIcon.innerText = '🔔';
-            if (alarmBtnText) alarmBtnText.innerText = 'SOUND ALARM (D4 TEST)';
+            if (alarmIcon) alarmIcon.innerText = '⚡';
+            if (alarmBtnText) alarmBtnText.innerText = 'FIRE TASER (D4 TEST)';
           }
         }
 
