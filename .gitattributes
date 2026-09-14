@@ -1,0 +1,14 @@
+# Ensure consistent line endings for text files
+* text=auto
+
+# Treat all image/binary formats as binary (no line ending conversion)
+*.gif binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.bmp binary
+*.ico binary
+*.mp4 binary
+*.webm binary
+*.zip binary
+*.bin binary
