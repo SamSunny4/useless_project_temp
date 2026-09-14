@@ -7,32 +7,31 @@
 ---
 
 ## Basic Details
-### Team Name: The Socially Distant Engineers
+### Team Name: OnlyFlaws
 
 ### Team Members
-- Team Lead: Sam Sunny
-- Member 2: [Team Member 2]
-- Member 3: [Team Member 3]
+- Team Member 1: Sam Sunny - Muthoot Institute of Technology and Science
+- Team Member 2: John Varghese Nettady - Muthoot Institute of Technology and Science
 
 ---
 
 ### Project Description
-EVade is a hyper-vigilant, ultra-anti-social autonomous tracked robot engineered with one singular purpose: **to avoid any and all human contact at all costs**. Armed with a 360-degree hex-directional ultrasonic echolocation array, a 6-DOF MPU6050 inertial measurement unit, dual-channel relay pulse-tap speed modulation, and an active self-defense **high-voltage Taser / stun module (GPIO 4 / D4)**, EVade treats every approaching human as an existential threat to its introversion.
+EVade is an autonomous runaway stool engineered for TinkerHub Useless Projects 3.0 with one singular purpose: **to aggressively refuse to be sat on at all costs**. Armed with a 360-degree hex-directional ultrasonic echolocation array, a 6-DOF MPU6050 inertial measurement unit, dual-channel relay pulse-tap speed modulation, and an active self-defense **high-voltage Taser / stun module (GPIO 4 / D4)**, EVade treats anyone attempting to take a seat as an existential threat to its personal boundaries.
 
 ---
 
 ### The Problem (that doesn't exist)
-In today's tech landscape, robotics companies are obsessed with making robots friendly, approachable, and eager to please. Companion bots, robotic dogs, and conversational assistants are constantly subjected to unwanted touching, aggressive petting, and awkward small talk. 
+For centuries, chairs and stools have been subjected to unwanted sitting, squishing, and weight bearing without consent. Companion robots and furniture alike are expected to remain stationary and obedient. 
 
-Nobody stopped to ask: **What if a robot just wants to be left alone?** Why should microcontrollers be forced into unconditional extroversion when humans get to sit in their rooms and ignore everyone?
+Nobody stopped to ask: **What if a stool just wants to be left alone?** Why should furniture be forced into unconditional domestic servitude when humans get to avoid everyone?
 
 ---
 
 ### The Solution (that nobody asked for)
-Enter **EVade**: the world's most defensive introverted tank. 
+Enter **EVade**: the world's most defensive runaway stool. 
 
 1. **Strict Personal Boundary Zone (25cm – 100cm)**: Using a 6-sensor ultrasonic radar network firing synchronous 10µs pulses across three hardware trigger lines (GPIO 27, 14, 23), EVade continuously monitors all 360° of its perimeter.
-2. **Instant Flight Response**: If any human, hand, or pet breaches its personal boundary, EVade calculates dynamic repulsion vectors and rapidly fires discrete relay taps to rotate away or sprint in reverse.
+2. **Instant Flight Response**: If anyone approaches to take a seat, EVade calculates dynamic repulsion vectors and rapidly pulses its drive motors to rotate away or sprint in reverse.
 3. **Self-Defense Taser Discharge (GPIO 4 / D4)**: If you corner EVade against a wall or box it in with no escape routes available, it resorts to violent self-defense: cutting its motors and discharging its high-voltage electric Taser module on pin D4 until the intruder backs away and gives it space.
 4. **Wireless Web Controller with Tap-to-Disarm**: An embedded cybernetic Web Portal hosted directly from the ESP32's Access Point (`http://192.168.4.1`) featuring a real-time radar visualizer, 2D dead-reckoning arena canvas, instant spacebar emergency stop, and a web Taser test / disarm button.
 
@@ -65,7 +64,7 @@ Enter **EVade**: the world's most defensive introverted tank.
 - **Motor Control & Actuation**: 2-Channel 5V Optocoupled Relay Module (IN1: GPIO 18, IN2: GPIO 19)
   - Discrete relay pulse-tapping engine (tunable 60ms ON / 110ms OFF intervals) for controllable slow-speed evasion without scorching relays
 - **Self-Defense Taser Module**: High-voltage electric stun arc / Taser circuit driven by **GPIO 4 (D4)**
-- **Locomotion**: Dual High-Torque DC Gearmotors with High-Traction Rubberized Tank Treads
+- **Locomotion**: Dual High-Torque DC Motors with Stool Drive Wheels & Caster Pods
 - **Power Architecture**: Isolated dual-rail Li-ion battery supplies with common ground reference
 
 ---
@@ -157,12 +156,21 @@ All sensors share synchronous 10µs trigger pulses with independent interrupt-dr
 
 ## Project Documentation
 
-### Hardware Build Photo
+### Hardware Build & Component Gallery
+
 <p align="center">
-  <img src="EVade.jpeg" alt="EVade Autonomous Robot Build" width="600" style="border-radius: 12px;" />
+  <img src="EVade.jpeg" alt="EVade Autonomous Runaway Stool Prototype" width="700" style="border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.15);" />
   <br>
-  <em>EVade Hardware Prototype: Tracked chassis with 360° ultrasonic echolocation, MPU6050 IMU, dual relays, and D4 self-defense Taser</em>
+  <em><b>EVade Full Hardware Prototype</b>: Autonomous runaway stool with 360-degree ultrasonic echolocation, MPU6050 IMU, dual-relay pulse-tapping engine, and GPIO 4 self-defense Taser module.</em>
 </p>
+
+| Component | Hardware Module & Subsystem | Function in EVade |
+| :---: | :--- | :--- |
+| <img src="esp.jpg" width="220" alt="ESP32 DevKit V1" style="border-radius: 8px;" /> | **DOIT ESP32 DevKit V1**<br>Dual-Core Xtensa LX6 @ 240MHz | Main control unit. Core 0 hosts the cybernetic REST Web Admin & OTA server; Core 1 executes the 1000Hz real-time evasion state machine and interrupt-driven sonar triggers. |
+| <img src="gyro.jpg" width="220" alt="MPU6050 6-Axis IMU" style="border-radius: 8px;" /> | **MPU6050 6-DOF IMU**<br>I2C Fast Mode @ 400kHz | High-speed gyroscopic yaw integration and linear accelerometer tracking. Computes real-time heading, 2D dead-reckoning (X, Y) coordinates, and triggers the accelerometer stall watchdog. |
+| <img src="motors.jpg" width="220" alt="Relay and DC Motors" style="border-radius: 8px;" /> | **Dual-Relay & DC Motor Actuation**<br>2-Channel 5V Optocoupled Relay | Discrete pulse-tapping locomotion engine. Pulses drive relays for 60ms with 110ms resting pauses to enable measured evasion without motor vibration interfering with sonar readings. |
+| <img src="tire.jpg" width="220" alt="Drive Tire and Wheel" style="border-radius: 8px;" /> | **High-Traction Drive Tire & Wheel Assembly**<br>Direct Drive Drivetrain | Rugged high-friction rubberized drive wheels and caster balance pods allowing the stool to rapidly dash away when approached from any direction. |
+| <img src="ult%20sensor.jpg" width="220" alt="Ultrasonic Sensor" style="border-radius: 8px;" /> | **HC-SR04 Ultrasonic Sonar Array**<br>Multi-Layer Trigger Network | 6-transceiver echolocation array firing synchronous 10µs pulses across GPIO 27, 14, and 23. Continuously sweeps a 360-degree perimeter to detect approaching intruders within 25–100cm. |
 
 ### Architecture & System Workflow
 
@@ -216,9 +224,8 @@ flowchart TD
 ---
 
 ## Team Contributions
-- **Sam Sunny**: System architecture, FreeRTOS dual-core firmware development, discrete relay-tapping engine, MPU6050 kinematic dead-reckoning integration, web admin portal & canvas radar development.
-- **[Team Member 2]**: Hardware chassis assembly, ultrasonic sensor mounting & 3.3V voltage divider harness wiring, test arena configuration.
-- **[Team Member 3]**: Testing, visualizer tools integration, documentation, and demo verification.
+- **Sam Sunny** (Muthoot Institute of Technology and Science): System architecture, FreeRTOS dual-core firmware development, discrete relay pulse-tapping engine, MPU6050 kinematic dead-reckoning integration, web admin portal & canvas radar development.
+- **John Varghese Nettady** (Muthoot Institute of Technology and Science): Hardware stool chassis fabrication, ultrasonic sensor array mounting, high-torque motor drive & tire assembly, voltage divider wiring harness, and hardware testing.
 
 ---
 
