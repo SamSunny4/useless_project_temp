@@ -175,7 +175,7 @@ All sensors share synchronous 10µs trigger pulses with independent interrupt-dr
 ### Hardware Demonstration
 
 <p align="center">
-  <img src="demo.gif" alt="EVade Live Hardware Demonstration" width="700" style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.18);" />
+  <img src="demo.gif" alt="EVade Live Hardware Demonstration" width="320" style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.18); max-width: 100%;" />
   <br>
   <em><b>EVade Live Hardware Demo (demo.gif)</b>: Autonomous runaway stool detecting an approaching intruder, calculating escape vectors, and darting away to preserve personal space.</em>
 </p>
