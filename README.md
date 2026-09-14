@@ -172,7 +172,7 @@ All sensors share synchronous 10µs trigger pulses with independent interrupt-dr
 | <img src="tire.jpg" width="220" alt="Drive Tire and Wheel" style="border-radius: 8px;" /> | **High-Traction Drive Tire & Wheel Assembly**<br>Direct Drive Drivetrain | Rugged high-friction rubberized drive wheels and caster balance pods allowing the stool to rapidly dash away when approached from any direction. |
 | <img src="ult%20sensor.jpg" width="220" alt="Ultrasonic Sensor" style="border-radius: 8px;" /> | **HC-SR04 Ultrasonic Sonar Array**<br>Multi-Layer Trigger Network | 6-transceiver echolocation array firing synchronous 10µs pulses across GPIO 27, 14, and 23. Continuously sweeps a 360-degree perimeter to detect approaching intruders within 25–100cm. |
 
-### Live Hardware Demonstration
+### Hardware Demonstration
 
 <p align="center">
   <img src="demo.gif" alt="EVade Live Hardware Demonstration" width="700" style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.18);" />
