@@ -76,31 +76,31 @@ Enter **EVade**: the world's most defensive runaway stool.
 ```mermaid
 flowchart TD
     subgraph POWER["Power Distribution Subsystem"]
-        BAT["Main Battery Pack<br/>(7.4V - 12V Li-ion)"]
-        BUCK["DC-DC Buck Converter<br/>(5.0V Regulated / 3A)"]
-        BAT -->|Motor VCC Rail| RELAY_PWR["Relay COM Bus (+V)"]
+        BAT["Main Battery Pack<br/>7.4V - 12V Li-ion"]
+        BUCK["DC-DC Buck Converter<br/>5.0V Regulated / 3A"]
+        BAT -->|Motor VCC Rail| RELAY_PWR["Relay COM Bus +V"]
         BAT -->|Raw Battery Power| BUCK
     end
 
-    subgraph ESP32_CORE["DOIT ESP32 DevKit V1 (Main Controller)"]
+    subgraph ESP32_CORE["DOIT ESP32 DevKit V1 Main Controller"]
         ESP["Dual-Core Xtensa LX6 @ 240MHz"]
-        AP["SoftAP: ESP32-EvadeBot-AP<br/>Web Admin & Canvas Radar (192.168.4.1)"]
-        USB["PC USB Serial (115200 Baud)<br/>Real-Time Visualizer UI"]
+        AP["SoftAP: ESP32-EvadeBot-AP<br/>Web Admin & Canvas Radar 192.168.4.1"]
+        USB["PC USB Serial 115200 Baud<br/>Real-Time Visualizer UI"]
         ESP --- AP
         ESP --- USB
     end
 
     subgraph PERCEPTION["Perception & Orientation Array"]
-        SONAR["6x HC-SR04 Ultrasonic Sonar Array<br/>360° Echolocation (25cm - 100cm Zone)"]
-        TRIG["3x Synchronous Triggers<br/>GPIO 27 (Trig 1) | GPIO 14 (Trig 2) | GPIO 23 (Trig 3)"]
-        ECHO["6x Dedicated Echo Lines (with 3.3V Dividers)<br/>GPIO 34 (Front) | GPIO 35 (Right) | GPIO 32 (Back)<br/>GPIO 25 (Left) | GPIO 39 (Rear-R) | GPIO 26 (Rear-L)"]
-        IMU["MPU6050 6-DOF IMU<br/>I2C Fast Mode (SDA: 21, SCL: 22)<br/>Heading Yaw Integration & Stall Watchdog"]
+        SONAR["6x HC-SR04 Ultrasonic Sonar Array<br/>360° Echolocation 25cm - 100cm Zone"]
+        TRIG["3x Synchronous Triggers<br/>GPIO 27 Trig 1, GPIO 14 Trig 2, GPIO 23 Trig 3"]
+        ECHO["6x Dedicated Echo Lines with 3.3V Dividers<br/>GPIO 34 Front, GPIO 35 Right, GPIO 32 Back<br/>GPIO 25 Left, GPIO 39 Rear-R, GPIO 26 Rear-L"]
+        IMU["MPU6050 6-DOF IMU<br/>I2C Fast Mode: SDA 21, SCL 22<br/>Heading Yaw Integration & Stall Watchdog"]
     end
 
     subgraph ACTUATION["Locomotion & Active Self-Defense"]
-        RELAYS["2-Channel 5V Optocoupled Relay Module<br/>Active LOW (IN1: GPIO 18, IN2: GPIO 19)"]
-        MOTORS["4x High-Torque DC Geared Motors<br/>Discrete Pulse-Tapping (60ms ON / 110ms OFF)"]
-        TASER["High-Voltage Self-Defense Taser Module<br/>Energized HIGH on GPIO 4 (D4) when Trapped"]
+        RELAYS["2-Channel 5V Optocoupled Relay Module<br/>Active LOW: IN1 GPIO 18, IN2 GPIO 19"]
+        MOTORS["4x High-Torque DC Geared Motors<br/>Discrete Pulse-Tapping 60ms ON / 110ms OFF"]
+        TASER["High-Voltage Self-Defense Taser Module<br/>Energized HIGH on GPIO 4 when Trapped"]
     end
 
     BUCK -->|5.0V VIN| ESP
@@ -108,15 +108,17 @@ flowchart TD
     BUCK -->|5.0V VCC| SONAR
     ESP -->|3.3V Clean VCC| IMU
 
-    ESP -->|10µs Sync Pulses| TRIG --> SONAR
-    SONAR -->|Echo Pulses| ECHO --> ESP
+    ESP -->|Sync Pulses| TRIG
+    TRIG --> SONAR
+    SONAR --> ECHO
+    ECHO -->|Echo Signals| ESP
     IMU -->|I2C Heading & Accel| ESP
 
     ESP -->|Pulse-Tap Steering| RELAYS
     RELAY_PWR --> RELAYS
     RELAYS -->|Switched High-Current Power| MOTORS
 
-    ESP -->|Trapped Trigger (D4 HIGH)| TASER
+    ESP -->|Trapped Trigger - Pin D4 HIGH| TASER
 ```
 
 ```

@@ -9,15 +9,15 @@ This document provides complete, pin-by-pin hardware schematics, power distribut
 ```mermaid
 flowchart TD
     subgraph PWR["Power Distribution"]
-        BAT["Main Battery (7.4V - 12V)"]
-        BUCK["DC-DC Buck Converter (5.0V Regulated)"]
-        BAT -->|Motor VCC Rail| RELAY_PWR["Relay COM Bus (+V)"]
+        BAT["Main Battery: 7.4V - 12V"]
+        BUCK["DC-DC Buck Converter: 5.0V Regulated"]
+        BAT -->|Motor VCC Rail| RELAY_PWR["Relay COM Bus +V"]
         BAT -->|Raw Supply| BUCK
     end
 
     subgraph MCU["ESP32 DevKit V1"]
         ESP["ESP32 Microcontroller"]
-        WIFI["WiFi SoftAP: ESP32-EvadeBot-AP (192.168.4.1)"]
+        WIFI["WiFi SoftAP: ESP32-EvadeBot-AP 192.168.4.1"]
         ESP --- WIFI
     end
 
@@ -25,13 +25,13 @@ flowchart TD
         SONAR["6x HC-SR04 Ultrasonic Sonar Array"]
         TRIG["Trig Lines: GPIO 27, GPIO 14, GPIO 23"]
         ECHOS["6x Echo Lines: GPIO 34, 35, 32, 25, 39, 26"]
-        IMU["MPU6050 6-DOF IMU (I2C: GPIO 21 SDA / 22 SCL)"]
+        IMU["MPU6050 6-DOF IMU: I2C GPIO 21 SDA / 22 SCL"]
     end
 
     subgraph ACT["Actuation & Defense"]
-        RELAYS["2-Channel 5V Relay Module (IN1: 18, IN2: 19)"]
+        RELAYS["2-Channel 5V Relay Module: IN1 18, IN2 19"]
         MOTORS["4x High-Torque DC Geared Motors"]
-        TASER["High-Voltage Self-Defense Taser (GPIO 4 / D4)"]
+        TASER["High-Voltage Self-Defense Taser: GPIO 4"]
     end
 
     BUCK -->|5V VIN| ESP
@@ -39,8 +39,10 @@ flowchart TD
     BUCK -->|5V VCC| SONAR
     ESP -->|3.3V Clean| IMU
 
-    ESP --> TRIG --> SONAR
-    SONAR --> ECHOS --> ESP
+    ESP --> TRIG
+    TRIG --> SONAR
+    SONAR --> ECHOS
+    ECHOS --> ESP
     IMU -->|I2C| ESP
 
     ESP -->|Pulse-Tap Logic| RELAYS
