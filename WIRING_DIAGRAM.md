@@ -6,38 +6,88 @@ This document provides complete, pin-by-pin hardware schematics, power distribut
 
 ## 1. System Block Diagram
 
+```mermaid
+flowchart TD
+    subgraph PWR["Power Distribution"]
+        BAT["Main Battery (7.4V - 12V)"]
+        BUCK["DC-DC Buck Converter (5.0V Regulated)"]
+        BAT -->|Motor VCC Rail| RELAY_PWR["Relay COM Bus (+V)"]
+        BAT -->|Raw Supply| BUCK
+    end
+
+    subgraph MCU["ESP32 DevKit V1"]
+        ESP["ESP32 Microcontroller"]
+        WIFI["WiFi SoftAP: ESP32-EvadeBot-AP (192.168.4.1)"]
+        ESP --- WIFI
+    end
+
+    subgraph SENS["Sensory System"]
+        SONAR["6x HC-SR04 Ultrasonic Sonar Array"]
+        TRIG["Trig Lines: GPIO 27, GPIO 14, GPIO 23"]
+        ECHOS["6x Echo Lines: GPIO 34, 35, 32, 25, 39, 26"]
+        IMU["MPU6050 6-DOF IMU (I2C: GPIO 21 SDA / 22 SCL)"]
+    end
+
+    subgraph ACT["Actuation & Defense"]
+        RELAYS["2-Channel 5V Relay Module (IN1: 18, IN2: 19)"]
+        MOTORS["4x High-Torque DC Geared Motors"]
+        TASER["High-Voltage Self-Defense Taser (GPIO 4 / D4)"]
+    end
+
+    BUCK -->|5V VIN| ESP
+    BUCK -->|5V VCC| RELAYS
+    BUCK -->|5V VCC| SONAR
+    ESP -->|3.3V Clean| IMU
+
+    ESP --> TRIG --> SONAR
+    SONAR --> ECHOS --> ESP
+    IMU -->|I2C| ESP
+
+    ESP -->|Pulse-Tap Logic| RELAYS
+    RELAY_PWR --> RELAYS
+    RELAYS -->|Switched Power| MOTORS
+    ESP -->|Active HIGH when Trapped| TASER
+```
+
 ```
                              +---------------------------------------+
                              |       Main Battery (7.4V - 12V)       |
                              +-------------------+-------------------+
                                                  |
                          +-----------------------+-----------------------+
-                         |                                               |
+                         | (Raw Battery Supply)                          | (Motor High-Current Rail)
                          v                                               v
            +---------------------------+                   +---------------------------+
            |   DC-DC Buck Converter    |                   |   Relay Power Bus (+V)    |
-           |   Output: 5.0V Regulated  |                   | (Through optional Master) |
+           |   Output: 5.0V Regulated  |                   | (Relay COM1 & COM2 Inputs)|
            +-------------+-------------+                   +-------------+-------------+
-                         |                                               |
+                         | 5.0V Logic Rail                               |
          +---------------+---------------+                               |
          |               |               |                               |
-         v               v               v                               v
-  +--------------+ +-----------+ +---------------+                +--------------+
-  | ESP32 DevKit | | 4x HC-SR04| | 2/3-Ch Relays |                | COM1 & COM2  |
-  |  (VIN / 5V)  | |  (VCC 5V) | |  (VCC / JD)   |                | Relay Inputs |
-  +-------+------+ +-----+-----+ +-------+-------+                +-------+------+
-          |              |               |                                |
-          | I2C (3.3V)   | Shared Trig   | IN1, IN2, (IN3)                |
-          v              | 4x Echos      v                                v
-  +--------------+       |       +---------------+                +--------------+
-  |   MPU6050    |<------+       | ESP32 GPIOs   |                | NO1 -> Left  |
-  | (SDA21/SCL22)|               | 18, 19, (4)   |                | NO2 -> Right |
-  +--------------+               +---------------+                +-------+------+
-                                                                          |
-                                                                          v
-                                                              +----------------------+
-                                                              | 4x DC Geared Motors  |
-                                                              +----------------------+
+         v               v               v                               |
+  +--------------+ +-----------+ +---------------+                       |
+  | ESP32 DevKit | | 6x HC-SR04| | 2-Ch Opto     |                       |
+  |  (VIN / 5V)  | | Sonar VCC | | Relay Module  |                       |
+  +-------+------+ +-----+-----+ +-------+-------+                       |
+          |              ^               ^                               |
+          | 3.3V I2C     | Trig: 27,14,23| Digital Pins 18 & 19          |
+          v              | 6x Echo Lines | (Active LOW Pulse Tapping)    |
+  +--------------+       | (34,35,32,    |                               |
+  | MPU6050 IMU  |       |  25,39,26)    |                               |
+  | (SDA21/SCL22)|-------+               |                               |
+  +--------------+                       v                               v
+          |                        +---------------+               +-----------+
+          | GPIO 4 (D4) Trigger    | Left & Right  |<--------------| COM1/COM2 |
+          v                        | Relay Ch 1 & 2|               | NO1 / NO2 |
+  +----------------------+         +-------+-------+               +-----+-----+
+  | Self-Defense Taser   |                 |                             |
+  | High-Voltage Module  |                 +--------------+--------------+
+  +----------------------+                                | Switched Motor Power
+                                                          v
+                                             +-------------------------+
+                                             | 4x High-Torque DC Motors|
+                                             | (Stool Drive Wheel Pods)|
+                                             +-------------------------+
 ```
 
 ---
